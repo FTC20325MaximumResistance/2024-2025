@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.auton;
 
-//import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.myUtil.computerVision.compVis;
 import org.firstinspires.ftc.teamcode.myUtil.computerVision.visionLib;
 import org.firstinspires.ftc.teamcode.myUtil.threads.auto.Arm;
 
-//@Config
+@Config
 @Autonomous(name="Playground")
 public class playground extends LinearOpMode {
     public static boolean L = false;
@@ -22,6 +22,7 @@ public class playground extends LinearOpMode {
         r.initRobot(this);
 
 
+        Arm arm = new Arm(r,this);
         String loc = L ? "Left" : R ? "Right" : "Mid";
         telemetry.addData("Location", loc);
         telemetry.update();
@@ -29,6 +30,8 @@ public class playground extends LinearOpMode {
 
         r.moveInches(0.4, 6);
         r.moveInches(0.5, 3.5/2, Hardware.directions.RIGHT);
+        r.moveLifter();
+        arm.move(300);
         switch (loc){
             default:
                 r.moveInches(0.7,28.5);

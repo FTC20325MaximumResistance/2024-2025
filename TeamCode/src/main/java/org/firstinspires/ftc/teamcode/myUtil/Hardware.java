@@ -14,8 +14,8 @@ import java.sql.Time;
 
 public class Hardware {
     OpMode opMode;
-    public DcMotor frm, flm, blm, brm;
-    // public Servo; add servos here when needed
+    public DcMotor frm, flm, blm, brm, arm,lifter,lift;
+    public Servo crossbow, claw, wrist, secure;
     public CRServo kraken;
     public BNO055IMU imu;
 
@@ -48,6 +48,17 @@ public class Hardware {
         }catch (Exception e) {
             opMode.telemetry.addLine("Drive motors are uninitiated, the robot will not drive forward or backwards");
         }
+        try{
+            crossbow = opMode.hardwareMap.servo.get("crossbow");
+            secure = opMode.hardwareMap.servo.get("secure");
+            crossbow.setPosition(1);
+            secure.setPosition(0);
+//            garret = opMode.hardwareMap.dcMotor.get("garret");
+//            garret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            garretG = new Garret(this,opMode);
+        } catch (Exception e) {
+            opMode.telemetry.addLine("Crossbow servo is not initialized");
+        }
         try {
             parameters = new BNO055IMU.Parameters();
             parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -56,6 +67,25 @@ public class Hardware {
             imu.initialize(parameters);
         }catch (Exception e) {
             opMode.telemetry.addLine("IMU not initialized");
+        }
+        try {
+            arm = opMode.hardwareMap.dcMotor.get("arm");
+            arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            arm.setDirection(DcMotorSimple.Direction.REVERSE);
+            claw = opMode.hardwareMap.servo.get("claw");
+            //Open: 1 Close: 0
+            claw.setPosition(0);
+            wrist = opMode.hardwareMap.servo.get("wrist");
+            //Ground: 0 Board: 1
+            wrist.setPosition(0);
+        }catch (Exception e){
+            opMode.telemetry.addLine("Arm not initialized");
+        }
+        try{
+            lift = opMode.hardwareMap.dcMotor.get("lift");
+            lifter = opMode.hardwareMap.dcMotor.get("lifter");
+        }catch (Exception e){
+            opMode.telemetry.addLine("Lift not initialized");
         }
 
 
