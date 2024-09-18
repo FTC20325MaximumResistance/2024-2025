@@ -18,6 +18,7 @@ public class blueLeft extends LinearOpMode{
         r.initRobot(this);
 
         visionLib a= new visionLib();
+        Arm arm = new Arm(r,this);
         String loc = a.init(this, compVis.Colors.BLUE, r);
         telemetry.addData("Location", loc);
         telemetry.update();
@@ -25,6 +26,8 @@ public class blueLeft extends LinearOpMode{
 
         r.moveInches(0.4, 6);
         r.moveInches(0.5, 3.5/2, Hardware.directions.RIGHT);
+        r.moveLifter();
+        arm.move(300);
 
         switch (loc){
             default:

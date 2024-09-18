@@ -16,6 +16,15 @@ public class MecanumHardAuto extends Hardware {
     public final int MAX_ARM = 1500;
     int pause = 100;
 
+    public void moveLifter(){
+        lifter.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lifter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        while (lifter.getCurrentPosition() > -51){
+            lifter.setPower(-0.45);
+        }
+        lifter.setPower(0);
+    }
+
     public void initRobot(OpMode opMode) {
         super.initRobot(opMode);
         flm.setDirection(DcMotorSimple.Direction.FORWARD);

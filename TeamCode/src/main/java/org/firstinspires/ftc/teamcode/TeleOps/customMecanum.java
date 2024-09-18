@@ -162,6 +162,14 @@ public class customMecanum extends OpMode {
             lineUp.start();
         }
 
+        if (crossbowCheck.milliseconds() > 750 && gamepad2.right_trigger > 0.5){
+            r.secure.setPosition(1);
+            r.waiter(500);
+               r.crossbow.setPosition(0);
+        }
+        if (gamepad2.left_trigger < 0.5){
+            crossbowCheck.reset();
+        }
 
         //Allows the user to disable the turning of the robot relative to the driver
         if (gamepad1.b){
@@ -181,14 +189,23 @@ public class customMecanum extends OpMode {
         if (gamepad2.right_bumper){
             unpressS = true;
         }else if (unpressS){
+            r.claw.setPosition(Math.abs(0.55-(r.claw.getPosition())));
             unpressS = false;
         }
         if (gamepad2.left_bumper){
             unpressS2 = true;
         }else if (unpressS2){
+            r.wrist.setPosition(Math.abs(1-Math.round(r.wrist.getPosition())));
             unpressS2 = false;
         }
 
+        r.arm.setPower(-gamepad2.left_stick_y * .7);
+        r.lifter.setPower(gamepad2.dpad_left ? -1 : gamepad2.dpad_right ? 0.45:0);
+        r.lift.setPower(gamepad2.dpad_up ? 1 : gamepad2.dpad_down ? -1:0);
+        telemetry.addData("Arm Position", r.arm.getCurrentPosition());
+        telemetry.addData("Wrist", r.wrist.getPosition());
+        telemetry.addData("Claw",r.claw.getPosition());
+        telemetry.addData("Lift",r.lifter.getCurrentPosition());
         telemetry.update();
 
 
