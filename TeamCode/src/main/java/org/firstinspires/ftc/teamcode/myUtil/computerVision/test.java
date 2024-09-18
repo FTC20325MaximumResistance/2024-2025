@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.myUtil.computerVision;
 
-import com.acmerobotics.dashboard.config.Config;
+//import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,7 +12,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 //@Disabled
-@Config
+//@Config
 @TeleOp(name="VisionTest")
 public class test extends OpMode {
     public static compVis.Colors color = compVis.Colors.RED;
