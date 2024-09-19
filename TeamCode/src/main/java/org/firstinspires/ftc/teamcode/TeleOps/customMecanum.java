@@ -31,15 +31,12 @@ public class customMecanum extends OpMode {
     boolean angled = true;
     double twist = 0;
     double twistMulti = 2;
-    ElapsedTime crossbowCheck;
     lineUp lineUp;
     Hardware r = new Hardware();
 
     @Override
     public void init() {
         r.initRobot(this);
-        crossbowCheck = new ElapsedTime();
-        crossbowCheck.reset();
 //        lineUp = new lineUp(this,r);
 
     }
