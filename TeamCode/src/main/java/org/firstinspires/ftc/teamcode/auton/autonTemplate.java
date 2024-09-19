@@ -26,7 +26,7 @@ public class autonTemplate extends LinearOpMode {
         telemetry.addData("Location", loc);
         telemetry.update();
         waitForStart();
-        telemetry.addLine("you are running a template!!!");
+        telemetry.addLine("you are running a template!!");
 
         switch (loc){
             default:
