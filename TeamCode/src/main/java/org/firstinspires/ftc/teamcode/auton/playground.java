@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.myUtil.Hardware;
 import org.firstinspires.ftc.teamcode.myUtil.MecanumHardAuto;
 import org.firstinspires.ftc.teamcode.myUtil.computerVision.compVis;
 import org.firstinspires.ftc.teamcode.myUtil.computerVision.visionLib;
-import org.firstinspires.ftc.teamcode.myUtil.threads.auto.Arm;
 
 //@Config
 @Autonomous(name="Playground")
