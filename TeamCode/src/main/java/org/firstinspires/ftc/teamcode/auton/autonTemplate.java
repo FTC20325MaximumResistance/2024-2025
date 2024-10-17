@@ -18,7 +18,7 @@ public class autonTemplate extends LinearOpMode {
         r.initRobot(this);
         telemetry.update();
         waitForStart();
-        telemetry.addLine("you are running a template!!");
+        telemetry.addLine("you are running a template!");
 
     }
 }
