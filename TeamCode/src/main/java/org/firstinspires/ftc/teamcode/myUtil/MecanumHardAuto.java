@@ -12,6 +12,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 public class MecanumHardAuto extends Hardware {
     final int TICKS_PER_INCH = 52;
     final int TICKS_PER_INCH_LINEAR_SLIDE = 52; //adjust later
+    final int TICKS_PER_INCH_LINEAR_ACTUATOR1 = 52;
+    final int TICKS_PER_INCH_LINEAR_ACTUATOR2 = 52;
     final double TPD = 14.45;
     final double mecanumMulti = 1/0.9;
     public final int MAX_ARM = 1500;
@@ -24,6 +26,8 @@ public class MecanumHardAuto extends Hardware {
         frm.setDirection(DcMotorSimple.Direction.REVERSE);
         blm.setDirection(DcMotorSimple.Direction.FORWARD);
         linear_slide.setDirection(DcMotorSimple.Direction.FORWARD);
+        linear_actuator1.setDirection(DcMotorSimple.Direction.FORWARD);
+        linear_actuator2.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
         /*
@@ -370,13 +374,65 @@ public class MecanumHardAuto extends Hardware {
 
 
         setDriveMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if (linear_slide.getTargetPosition() < 90){ // change 90 later
 
-        while (!getTolerance(Math.abs(linear_slide.getCurrentPosition()),  Math.abs(linear_slide.getTargetPosition()),10)) {
-            linear_slide.setPower(power);
-        }
+            while (!getTolerance(Math.abs(linear_slide.getCurrentPosition()),  Math.abs(linear_slide.getTargetPosition()),10)) {
+                if(linear_slide.getCurrentPosition() > 90){
+                    break;
+                }
+                linear_slide.setPower(power);
+            }
 //        waiter(5000);
-        linear_slide.setPower(0);
-        waiter(pause);
+            linear_slide.setPower(0);
+            waiter(pause);
+        }
+    }
+
+    public void linearActuator1MoveInches(double power, double inches){
+        inches *= TICKS_PER_INCH_LINEAR_ACTUATOR1;
+
+        linear_actuator1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        linear_actuator1.setTargetPosition((int)Math.round(inches));
+        linear_actuator1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+        setDriveMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if (linear_actuator1.getTargetPosition() < 90){ // change 90 later
+
+            while (!getTolerance(Math.abs(linear_actuator1.getCurrentPosition()),  Math.abs(linear_actuator1.getTargetPosition()),10)) {
+                if(linear_actuator1.getCurrentPosition() > 90){
+                    break;
+                }
+                linear_actuator1.setPower(power);
+            }
+//        waiter(5000);
+            linear_actuator1.setPower(0);
+            waiter(pause);
+        }
+    }
+    public void linearActuator2MoveInches(double power, double inches){
+        inches *= TICKS_PER_INCH_LINEAR_ACTUATOR2;
+
+        linear_actuator2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        linear_actuator2.setTargetPosition((int)Math.round(inches));
+        linear_actuator2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+        setDriveMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if (linear_actuator2.getTargetPosition() < 90){ // change 90 later
+
+            while (!getTolerance(Math.abs(linear_actuator2.getCurrentPosition()),  Math.abs(linear_actuator2.getTargetPosition()),10)) {
+                if(linear_actuator2.getCurrentPosition() > 90){
+                    break;
+                }
+                linear_actuator2.setPower(power);
+            }
+//        waiter(5000);
+            linear_actuator2.setPower(0);
+            waiter(pause);
+        }
     }
 
     public void moveInches(double power, double inches, directions dir){
