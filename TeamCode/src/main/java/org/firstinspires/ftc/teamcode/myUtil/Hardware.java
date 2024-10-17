@@ -13,7 +13,7 @@ import java.sql.Time;
 
 public class Hardware {
     OpMode opMode;
-    public DcMotor frm, flm, blm, brm, linear_slide;
+    public DcMotor frm, flm, blm, brm, linear_slide, linear_actuator1, linear_actuator2;
     // public Servo; add servos here when needed
     public CRServo kraken;
     public BNO055IMU imu;
@@ -34,6 +34,9 @@ public class Hardware {
             flm = opMode.hardwareMap.dcMotor.get("flm");
             brm = opMode.hardwareMap.dcMotor.get("brm");
             blm = opMode.hardwareMap.dcMotor.get("blm");
+            linear_slide = opMode.hardwareMap.dcMotor.get("linear_slide");
+            linear_actuator1 = opMode.hardwareMap.dcMotor.get("linear_actuator1");
+            linear_actuator2 = opMode.hardwareMap.dcMotor.get("linear_actuator2");
             drive = new DcMotor[]{frm, flm, brm, blm};
             for (DcMotor motor: drive){
                 motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -75,6 +78,14 @@ public class Hardware {
         linear_slide.setPower(power);
     }
 
+    public void setLinear_actuator1(double power){
+        linear_actuator1.setPower(power);
+    }
+
+    public void setLinear_actuator2(double power){
+        linear_actuator2.setPower(power);
+    }
+
     /**
      *
      * @param power1 Front Right
@@ -98,6 +109,12 @@ public class Hardware {
 
     public void setLinearSlideTicks(int ticks){
         linear_slide.setTargetPosition(ticks);
+    }
+    public void setLinearActuator1Ticks(int ticks){
+        linear_actuator1.setTargetPosition(ticks);
+    }
+    public void setLinearActuator2Ticks(int ticks){
+        linear_actuator2.setTargetPosition(ticks);
     }
 
     public void setDriveMode(DcMotor.RunMode mode){

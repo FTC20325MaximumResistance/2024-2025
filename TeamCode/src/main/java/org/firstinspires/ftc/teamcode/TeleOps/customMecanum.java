@@ -186,6 +186,13 @@ public class customMecanum extends OpMode {
             unpressS2 = false;
         }
 
+        if(gamepad2.dpad_up){
+            r.setLinearSlidePower(0.2);
+        }
+        else if (gamepad2.dpad_down){
+            r.setLinearSlidePower(0.1);
+        }
+
         telemetry.update();
 
 
