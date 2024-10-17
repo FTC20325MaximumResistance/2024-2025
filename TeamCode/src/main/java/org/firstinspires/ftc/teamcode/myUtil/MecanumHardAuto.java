@@ -11,7 +11,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 
 public class MecanumHardAuto extends Hardware {
     final int TICKS_PER_INCH = 52;
-    final double TPD = 14.45;//(2609/179.781417);
+    final int TICKS_PER_INCH_LINEAR_SLIDE = 52;
+    final double TPD = 14.45;
     final double mecanumMulti = 1/0.9;
     public final int MAX_ARM = 1500;
     int pause = 100;
@@ -22,6 +23,7 @@ public class MecanumHardAuto extends Hardware {
         brm.setDirection(DcMotorSimple.Direction.FORWARD);
         frm.setDirection(DcMotorSimple.Direction.REVERSE);
         blm.setDirection(DcMotorSimple.Direction.FORWARD);
+        linear_slide.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
         /*
@@ -356,6 +358,27 @@ public class MecanumHardAuto extends Hardware {
         brm.setPower(0);
         waiter(pause);
     }
+
+    public void linearSlideMoveInches(double power, double inches){
+
+        inches *= TICKS_PER_INCH_LINEAR_SLIDE;
+
+        linear_slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        linear_slide.setTargetPosition((int)Math.round(inches));
+        linear_slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+        setDriveMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (!getTolerance(Math.abs(linear_slide.getCurrentPosition()),  Math.abs(linear_slide.getTargetPosition()),10)) {
+            linear_slide.setPower(power);
+        }
+//        waiter(5000);
+        linear_slide.setPower(0);
+        waiter(pause);
+    }
+
     public void moveInches(double power, double inches, directions dir){
         inches *= TICKS_PER_INCH*mecanumMulti;
         setDriveMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -388,10 +411,9 @@ public class MecanumHardAuto extends Hardware {
         brm.setPower(0);
         waiter(pause);
     }
-//    */
-
-
-
-
-
 }
+
+
+
+
+
