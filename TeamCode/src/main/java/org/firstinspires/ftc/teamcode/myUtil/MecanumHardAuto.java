@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 
 public class MecanumHardAuto extends Hardware {
     final int TICKS_PER_INCH = 52;
-    final int TICKS_PER_INCH_LINEAR_SLIDE = 52;
+    final int TICKS_PER_INCH_LINEAR_SLIDE = 52; //adjust later
     final double TPD = 14.45;
     final double mecanumMulti = 1/0.9;
     public final int MAX_ARM = 1500;
