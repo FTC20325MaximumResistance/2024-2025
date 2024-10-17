@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.myUtil;
 
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -14,7 +13,7 @@ import java.sql.Time;
 
 public class Hardware {
     OpMode opMode;
-    public DcMotor frm, flm, blm, brm;
+    public DcMotor frm, flm, blm, brm, linear_slide;
     // public Servo; add servos here when needed
     public CRServo kraken;
     public BNO055IMU imu;
@@ -72,6 +71,10 @@ public class Hardware {
         brm.setPower(power);
     }
 
+    public void setLinearSlidePower(double power){
+        linear_slide.setPower(power);
+    }
+
     /**
      *
      * @param power1 Front Right
@@ -92,11 +95,20 @@ public class Hardware {
         blm.setTargetPosition(ticks);
         brm.setTargetPosition(ticks);
     }
+
+    public void setLinearSlideTicks(int ticks){
+        linear_slide.setTargetPosition(ticks);
+    }
+
     public void setDriveMode(DcMotor.RunMode mode){
         frm.setMode(mode);
         flm.setMode(mode);
         blm.setMode(mode);
         brm.setMode(mode);
+    }
+
+    public void setLinearSlideMode(DcMotor.RunMode mode){
+        linear_slide.setMode(mode);
     }
 
     public boolean getTolerance(double val1, double val2, double tolerance){
