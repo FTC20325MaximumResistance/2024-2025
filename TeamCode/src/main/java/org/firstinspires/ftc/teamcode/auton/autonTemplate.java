@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.auton;
 //import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.myUtil.Hardware;
 import org.firstinspires.ftc.teamcode.myUtil.MecanumHardAuto;
@@ -16,9 +17,10 @@ public class autonTemplate extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         r.initRobot(this);
-        telemetry.update();
         waitForStart();
-        telemetry.addLine("you are running a template!");
+        r.flm.setDirection(DcMotorSimple.Direction.REVERSE);
+//        r.moveInches(0.1, 10, Hardware.directions.RIGHT);
+        r.linearSlideMoveInches(0.1, 5);
 
     }
 }

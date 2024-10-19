@@ -13,7 +13,7 @@ import java.sql.Time;
 
 public class Hardware {
     OpMode opMode;
-    public DcMotor frm, flm, blm, brm, linear_slide, linear_actuator1, linear_actuator2;
+    public DcMotor frm, flm, blm, brm, linear_slide, arm;
     // public Servo; add servos here when needed
     public CRServo kraken;
     public BNO055IMU imu;
@@ -35,8 +35,7 @@ public class Hardware {
             brm = opMode.hardwareMap.dcMotor.get("brm");
             blm = opMode.hardwareMap.dcMotor.get("blm");
             linear_slide = opMode.hardwareMap.dcMotor.get("linear_slide");
-            linear_actuator1 = opMode.hardwareMap.dcMotor.get("linear_actuator1");
-            linear_actuator2 = opMode.hardwareMap.dcMotor.get("linear_actuator2");
+            arm = opMode.hardwareMap.dcMotor.get("arm");
             drive = new DcMotor[]{frm, flm, brm, blm};
             for (DcMotor motor: drive){
                 motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -78,13 +77,10 @@ public class Hardware {
         linear_slide.setPower(power);
     }
 
-    public void setLinear_actuator1(double power){
-        linear_actuator1.setPower(power);
+    public void setArmPower(double power){
+        arm.setPower(power);
     }
 
-    public void setLinear_actuator2(double power){
-        linear_actuator2.setPower(power);
-    }
 
     /**
      *
@@ -110,11 +106,9 @@ public class Hardware {
     public void setLinearSlideTicks(int ticks){
         linear_slide.setTargetPosition(ticks);
     }
-    public void setLinearActuator1Ticks(int ticks){
-        linear_actuator1.setTargetPosition(ticks);
-    }
-    public void setLinearActuator2Ticks(int ticks){
-        linear_actuator2.setTargetPosition(ticks);
+
+    public void setArmTicks(int ticks){
+        arm.setTargetPosition(ticks);
     }
 
     public void setDriveMode(DcMotor.RunMode mode){
@@ -126,6 +120,10 @@ public class Hardware {
 
     public void setLinearSlideMode(DcMotor.RunMode mode){
         linear_slide.setMode(mode);
+    }
+
+    public void setArmMode(DcMotor.RunMode mode){
+        arm.setMode(mode);
     }
 
     public boolean getTolerance(double val1, double val2, double tolerance){
