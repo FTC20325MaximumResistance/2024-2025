@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.TeleOps;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -38,6 +39,7 @@ public class customMecanum extends OpMode {
     public void init() {
         r.initRobot(this);
 //        lineUp = new lineUp(this,r);
+        r.flm.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
 
@@ -186,11 +188,33 @@ public class customMecanum extends OpMode {
             unpressS2 = false;
         }
 
+
         if(gamepad2.dpad_up){
-            r.setLinearSlidePower(0.2);
+            r.arm.setDirection(DcMotorSimple.Direction.FORWARD);
+            r.arm.setPower(0.5);
+        }else{
+            r.arm.setPower(0);
         }
-        else if (gamepad2.dpad_down){
-            r.setLinearSlidePower(0.1);
+
+        if(gamepad2.dpad_down){
+            r.arm.setDirection(DcMotorSimple.Direction.REVERSE);
+            r.arm.setPower(0.1);
+        }else{
+            r.arm.setPower(0);
+        }
+
+        if(unpressS){
+            r.linear_slide.setPower(0);
+        }else{
+            r.linear_slide.setDirection(DcMotorSimple.Direction.FORWARD);
+            r.linear_slide.setPower(0.8);
+        }
+
+        if(unpressS2){
+            r.linear_slide.setPower(0);
+        }else{
+            r.linear_slide.setDirection(DcMotorSimple.Direction.REVERSE);
+            r.linear_slide.setPower(0.8);
         }
 
         telemetry.update();
