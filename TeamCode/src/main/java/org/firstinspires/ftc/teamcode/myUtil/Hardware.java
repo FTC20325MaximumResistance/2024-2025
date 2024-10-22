@@ -14,7 +14,7 @@ import java.sql.Time;
 public class Hardware {
     OpMode opMode;
     public DcMotor frm, flm, blm, brm, linear_slide, arm;
-    // public Servo; add servos here when needed
+    public Servo arm1, arm2, claw;
     public CRServo kraken;
     public BNO055IMU imu;
 
@@ -34,6 +34,9 @@ public class Hardware {
             flm = opMode.hardwareMap.dcMotor.get("flm");
             brm = opMode.hardwareMap.dcMotor.get("brm");
             blm = opMode.hardwareMap.dcMotor.get("blm");
+            arm1 = opMode.hardwareMap.servo.get("arm1");
+            arm2 = opMode.hardwareMap.servo.get("arm2");
+            claw = opMode.hardwareMap.servo.get("claw");
             linear_slide = opMode.hardwareMap.dcMotor.get("linear_slide");
             arm = opMode.hardwareMap.dcMotor.get("arm");
             drive = new DcMotor[]{frm, flm, brm, blm};
