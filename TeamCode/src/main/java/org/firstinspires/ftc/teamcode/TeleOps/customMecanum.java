@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -97,8 +98,8 @@ public class customMecanum extends OpMode {
             //This is the mecanum drive code, it is weird
             //first we must translate the rectangular values of the joystick into polar coordinates;
 
-            double y = -gamepad1.left_stick_y;
-            double x = gamepad1.left_stick_x;
+            double y = -gamepad1.left_stick_x;
+            double x = -gamepad1.left_stick_y;
             if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) < 0.2) {
                 x = 0;
                 y = 0;
@@ -141,14 +142,14 @@ public class customMecanum extends OpMode {
                  v2 = velocity * Math.sin(angle + (Math.PI / 4) - angle2 - twist);
             }else{
                  v1 = velocity * Math.cos(angle + (Math.PI / 4));
-                 v2 = velocity * Math.sin(angle + (Math.PI / 4));
+                 v2 = velocity * Math.sin(angle + (Math.PI / 4)); // 4
             }
 
 
-            power1 = v1 - rotation;
+            power1 = v1 + rotation;
             power2 = v2 - rotation;
             power3 = v2 + rotation;
-            power4 = v1 + rotation;
+            power4 = v1 - rotation;
 
         }
         r.flm.setPower(power3 * deflator);
@@ -191,30 +192,23 @@ public class customMecanum extends OpMode {
 
         if(gamepad2.dpad_up){
             r.arm.setDirection(DcMotorSimple.Direction.FORWARD);
-            r.arm.setPower(0.5);
-        }else{
-            r.arm.setPower(0);
-        }
-
-        if(gamepad2.dpad_down){
+            r.arm.setPower(0.8);
+        }else if(gamepad2.dpad_down){
             r.arm.setDirection(DcMotorSimple.Direction.REVERSE);
-            r.arm.setPower(0.1);
+            r.arm.setPower(0.8);
         }else{
             r.arm.setPower(0);
         }
 
-        if(unpressS){
-            r.linear_slide.setPower(0);
-        }else{
+        if(gamepad2.left_bumper){
             r.linear_slide.setDirection(DcMotorSimple.Direction.FORWARD);
-            r.linear_slide.setPower(0.8);
-        }
-
-        if(unpressS2){
-            r.linear_slide.setPower(0);
-        }else{
+            r.linear_slide.setPower(0.3);
+        }else if(gamepad2.right_bumper){
             r.linear_slide.setDirection(DcMotorSimple.Direction.REVERSE);
-            r.linear_slide.setPower(0.8);
+            r.linear_slide.setPower(0.3);
+        }
+        else{
+            r.linear_slide.setPower(0);
         }
 
         telemetry.update();

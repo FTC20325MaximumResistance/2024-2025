@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.auton;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.myUtil.Hardware;
 import org.firstinspires.ftc.teamcode.myUtil.MecanumHardAuto;
@@ -20,7 +21,9 @@ public class autonTemplate extends LinearOpMode {
         waitForStart();
         r.flm.setDirection(DcMotorSimple.Direction.REVERSE);
 //        r.moveInches(0.1, 10, Hardware.directions.RIGHT);
-        r.linearSlideMoveInches(0.1, 5);
+        r.claw.setPosition(0.5);
+        telemetry.addData("claw: ",r.claw.getPosition());
+        telemetry.update();
 
     }
 }
