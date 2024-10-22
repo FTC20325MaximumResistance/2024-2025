@@ -163,7 +163,7 @@ public class customMecanum extends OpMode {
         }
 
 
-        //Allows the user to disable the turning of the robot relative to the driver
+        //Allows the user to disable the turning of the robot relative to the drivers
         if (gamepad1.b){
             unpressB = true;
         }else if (unpressB){
