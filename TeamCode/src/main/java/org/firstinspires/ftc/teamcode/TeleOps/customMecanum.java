@@ -157,7 +157,7 @@ public class customMecanum extends OpMode {
         r.blm.setPower(power1 * deflator);
         r.brm.setPower(power2 * deflator);
 
-        //Allows the robot to place itself in a specific location
+        //Allows the robot to place itself in a specific locations
         if (gamepad1.a && gamepad1.left_trigger > 0.5){
             lineUp.start();
         }
