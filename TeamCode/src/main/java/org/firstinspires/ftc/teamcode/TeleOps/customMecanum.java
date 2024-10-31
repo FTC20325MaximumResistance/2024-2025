@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -40,8 +39,6 @@ public class customMecanum extends OpMode {
     public void init() {
         r.initRobot(this);
 //        lineUp = new lineUp(this,r);
-        r.flm.setDirection(DcMotorSimple.Direction.REVERSE);
-
     }
 
     @Override
@@ -77,19 +74,20 @@ public class customMecanum extends OpMode {
             //Determines how much the robot has been turned since the beginning of the opMode
             double angle2;
 
-                try {
-                    angle2 = r.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
-                } catch (Exception e) {
-                    angle2 = 0;
-                }
+            try {
+//                    angle2 = r.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
+                angle2 = 0;
+            } catch (Exception e) {
+                angle2 = 0;
+            }
 
             angle2 %= 2 * Math.PI;
 
 
         /*
-            fl______fr
-            |    +   |
-            bl______br
+            flm______frm
+            |     +    |
+            blm______brm
          */
 
 
@@ -98,8 +96,8 @@ public class customMecanum extends OpMode {
             //This is the mecanum drive code, it is weird
             //first we must translate the rectangular values of the joystick into polar coordinates;
 
-            double y = -gamepad1.left_stick_x;
-            double x = -gamepad1.left_stick_y;
+            double y = -gamepad1.left_stick_y;
+            double x = gamepad1.left_stick_x;
             if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) < 0.2) {
                 x = 0;
                 y = 0;
@@ -138,18 +136,18 @@ public class customMecanum extends OpMode {
             double v1 = 0;
             double v2 = 0;
             if (angled) {
-                 v1 = velocity * Math.cos(angle + (Math.PI / 4) - angle2 - twist);
-                 v2 = velocity * Math.sin(angle + (Math.PI / 4) - angle2 - twist);
+                v1 = velocity * Math.cos(angle + (Math.PI / 4) - angle2 - twist);
+                v2 = velocity * Math.sin(angle + (Math.PI / 4) - angle2 - twist);
             }else{
-                 v1 = velocity * Math.cos(angle + (Math.PI / 4));
-                 v2 = velocity * Math.sin(angle + (Math.PI / 4)); // 4
+                v1 = velocity * Math.cos(angle + (Math.PI / 4));
+                v2 = velocity * Math.sin(angle + (Math.PI / 4));
             }
 
 
-            power1 = v1 + rotation;
+            power1 = v1 - rotation;
             power2 = v2 - rotation;
             power3 = v2 + rotation;
-            power4 = v1 - rotation;
+            power4 = v1 + rotation;
 
         }
         r.flm.setPower(power3 * deflator);
@@ -157,19 +155,19 @@ public class customMecanum extends OpMode {
         r.blm.setPower(power1 * deflator);
         r.brm.setPower(power2 * deflator);
 
-        //Allows the robot to place itself in a specific locations
-        if (gamepad1.a && gamepad1.left_trigger > 0.5){
-            lineUp.start();
-        }
+        //Allows the robot to place itself in a specific location
 
-
-        //Allows the user to disable the turning of the robot relative to the drivers
+        //Allows the user to disable the turning of the robot relative to the driver
         if (gamepad1.b){
             unpressB = true;
         }else if (unpressB){
             angled = !angled;
             unpressB = false;
         }
+
+        //TODO REVERSE ALL WHEELS BUT BACK RIGHT
+        //ITLL BE A START
+        //DO YOU KNOW HOW?
 
         //Resets the robot "forward" position
         if (gamepad1.y){
@@ -189,26 +187,47 @@ public class customMecanum extends OpMode {
             unpressS2 = false;
         }
 
-
-        if(gamepad2.dpad_up){
-            r.arm.setDirection(DcMotorSimple.Direction.FORWARD);
-            r.arm.setPower(0.8);
-        }else if(gamepad2.dpad_down){
-            r.arm.setDirection(DcMotorSimple.Direction.REVERSE);
-            r.arm.setPower(0.8);
-        }else{
-            r.arm.setPower(0);
-        }
-
-        if(gamepad2.left_bumper){
-            r.linear_slide.setDirection(DcMotorSimple.Direction.FORWARD);
-            r.linear_slide.setPower(0.3);
-        }else if(gamepad2.right_bumper){
+        if(gamepad2.left_bumper) {
             r.linear_slide.setDirection(DcMotorSimple.Direction.REVERSE);
             r.linear_slide.setPower(0.3);
         }
-        else{
+        else if(gamepad2.right_bumper){
+            r.linear_slide.setDirection(DcMotorSimple.Direction.FORWARD);
+            r.linear_slide.setPower(0.3);
+        }else{
             r.linear_slide.setPower(0);
+        }
+
+//        if(gamepad2.right_trigger > 0){
+//            r.arm.setDirection(DcMotorSimple.Direction.REVERSE);
+//            r.arm.setPower(gamepad2.right_trigger * 0.8);
+//        }
+//        else if(gamepad2.left_trigger > 0){
+//            r.arm.setDirection(DcMotorSimple.Direction.FORWARD);
+//            r.arm.setPower(gamepad2.left_trigger * 0.8);
+//        }
+//        else{
+//            r.arm.setPower(0);
+//        }
+
+        if(gamepad2.left_trigger > 0){
+            r.claw.setPosition(1);
+        }else if(gamepad2.right_trigger > 0){
+            r.claw.setPosition(0);
+        }
+
+        r.arm1.setPosition(Math.abs(gamepad2.left_stick_y - 1) * 0.5);
+
+
+        if(gamepad2.right_stick_y > 0){
+            r.arm.setDirection(DcMotorSimple.Direction.REVERSE);
+            r.arm.setPower(Math.abs(gamepad2.right_stick_y * 0.7));
+        }
+        else if(gamepad2.right_stick_y < 0){
+            r.arm.setDirection(DcMotorSimple.Direction.FORWARD);
+            r.arm.setPower(Math.abs(gamepad2.right_stick_y * 0.7));
+        }else{
+            r.arm.setPower(0);
         }
 
         telemetry.update();

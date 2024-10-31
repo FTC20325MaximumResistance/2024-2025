@@ -5,31 +5,23 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 
 public class MecanumHardAuto extends Hardware {
     final int TICKS_PER_INCH = 52;
-    final int TICKS_PER_INCH_LINEAR_SLIDE = 52; //adjust later
-    final int TICKS_PER_INCH_ARM = 52; //adjust later
-    final int TICKS_PER_INCH_LINEAR_ACTUATOR1 = 52;
-    final int TICKS_PER_INCH_LINEAR_ACTUATOR2 = 52;
-    final double TPD = 14.45;
+    final int TICKS_PER_INCH_LINEAR_SLIDE = 52;
+    final double TPD = 14.45;//(2609/179.781417);
     final double mecanumMulti = 1/0.9;
     public final int MAX_ARM = 1500;
     int pause = 100;
 
     public void initRobot(OpMode opMode) {
         super.initRobot(opMode);
-        flm.setDirection(DcMotorSimple.Direction.FORWARD);
+        flm.setDirection(DcMotorSimple.Direction.REVERSE);
         brm.setDirection(DcMotorSimple.Direction.FORWARD);
-        frm.setDirection(DcMotorSimple.Direction.REVERSE);
-        blm.setDirection(DcMotorSimple.Direction.FORWARD);
-        linear_slide.setDirection(DcMotorSimple.Direction.FORWARD);
-        arm.setDirection(DcMotorSimple.Direction.FORWARD);
-
-
+        frm.setDirection(DcMotorSimple.Direction.FORWARD);
+        blm.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
         /*
@@ -236,12 +228,12 @@ public class MecanumHardAuto extends Hardware {
         double v1 = power * Math.cos(angle + (Math.PI / 4));
         double v2 = power * Math.sin(angle + (Math.PI / 4));
 
-       while (Math.abs(position.x) < Math.abs(x)){
-           blm.setPower(v1);
-           frm.setPower(v1);
-           flm.setPower(v2);
-           brm.setPower(v2);
-       }
+        while (Math.abs(position.x) < Math.abs(x)){
+            blm.setPower(v1);
+            frm.setPower(v1);
+            flm.setPower(v2);
+            brm.setPower(v2);
+        }
         blm.setPower(0);
         frm.setPower(0);
         flm.setPower(0);
@@ -336,7 +328,7 @@ public class MecanumHardAuto extends Hardware {
         brm.setPower(0);
 
     }
-//    /*
+    //    /*
     public void moveInches(double power, double inches){
 
         inches *= TICKS_PER_INCH;
@@ -364,8 +356,7 @@ public class MecanumHardAuto extends Hardware {
         brm.setPower(0);
         waiter(pause);
     }
-
-    public void linearSlideMoveInches(double power, double inches){
+    public void setLinearSlide(double power, double inches){
 
         inches *= TICKS_PER_INCH_LINEAR_SLIDE;
 
@@ -376,46 +367,14 @@ public class MecanumHardAuto extends Hardware {
 
 
         setDriveMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (linear_slide.getTargetPosition() < 90){ // change 90 later
 
-            while (!getTolerance(Math.abs(linear_slide.getCurrentPosition()),  Math.abs(linear_slide.getTargetPosition()),10)) {
-                if(linear_slide.getCurrentPosition() > 90){
-                    break;
-                }
-                linear_slide.setPower(power);
-            }
-//        waiter(5000);
-            linear_slide.setPower(0);
-            waiter(pause);
+        while (!getTolerance(Math.abs(linear_slide.getCurrentPosition()),  Math.abs(flm.getTargetPosition()),10)) {
+            linear_slide.setPower(power);
         }
-    }
-
-    public void armMoveInches(double power, double inches){
-
-        inches *= TICKS_PER_INCH_ARM;
-
-        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        arm.setTargetPosition((int)Math.round(inches));
-        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-
-        setDriveMode(DcMotor.RunMode.RUN_TO_POSITION);
-        if (arm.getTargetPosition() < 90){ // change 90 later
-
-            while (!getTolerance(Math.abs(arm.getCurrentPosition()),  Math.abs(arm.getTargetPosition()),10)) {
-                if(arm.getCurrentPosition() > 90){
-                    break;
-                }
-                arm.setPower(power);
-            }
 //        waiter(5000);
-            arm.setPower(0);
-            waiter(pause);
-        }
+        linear_slide.setPower(0);
+        waiter(pause);
     }
-
-
     public void moveInches(double power, double inches, directions dir){
         inches *= TICKS_PER_INCH*mecanumMulti;
         setDriveMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -448,9 +407,10 @@ public class MecanumHardAuto extends Hardware {
         brm.setPower(0);
         waiter(pause);
     }
+//    */
+
+
+
+
+
 }
-
-
-
-
-

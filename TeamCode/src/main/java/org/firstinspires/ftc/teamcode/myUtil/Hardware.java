@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.myUtil;
 
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -14,15 +15,15 @@ import java.sql.Time;
 public class Hardware {
     OpMode opMode;
     public DcMotor frm, flm, blm, brm, linear_slide, arm;
-    public Servo arm1, arm2, claw;
-    public CRServo kraken;
+    public Servo claw, arm1, arm2;
+    public CRServo kraken; // crservo
     public BNO055IMU imu;
 
 
     public BNO055IMU.Parameters parameters;
 
 
-   public DcMotor[] drive;
+    public DcMotor[] drive;
 
     public void initRobot(OpMode opMode){
         this.opMode = opMode;
@@ -34,20 +35,22 @@ public class Hardware {
             flm = opMode.hardwareMap.dcMotor.get("flm");
             brm = opMode.hardwareMap.dcMotor.get("brm");
             blm = opMode.hardwareMap.dcMotor.get("blm");
-            arm1 = opMode.hardwareMap.servo.get("arm1");
-            arm2 = opMode.hardwareMap.servo.get("arm2");
-            claw = opMode.hardwareMap.servo.get("claw");
             linear_slide = opMode.hardwareMap.dcMotor.get("linear_slide");
             arm = opMode.hardwareMap.dcMotor.get("arm");
+
+            claw = opMode.hardwareMap.servo.get("claw");
+            arm1 = opMode.hardwareMap.servo.get("arm1");
+            arm2 = opMode.hardwareMap.servo.get("arm2");
             drive = new DcMotor[]{frm, flm, brm, blm};
             for (DcMotor motor: drive){
                 motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
-//            frm.setDirection(DcMotorSimple.Direction.REVERSE);
-//            flm.setDirection(DcMotorSimple.Direction.REVERSE);
-            blm.setDirection(DcMotorSimple.Direction.REVERSE);
-
-//            brm.setDirection(DcMotorSimple.Direction.REVERSE);
+            arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            linear_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            frm.setDirection(DcMotorSimple.Direction.REVERSE);
+            flm.setDirection(DcMotorSimple.Direction.REVERSE);
+            blm.setDirection(DcMotorSimple.Direction.FORWARD);
+            brm.setDirection(DcMotorSimple.Direction.FORWARD);
 
         }catch (Exception e) {
             opMode.telemetry.addLine("Drive motors are uninitiated, the robot will not drive forward or backwards");
@@ -66,25 +69,12 @@ public class Hardware {
         opMode.telemetry.update();
 //        crossbow.setPosition(0);
     }
-
-
-
     public void setMotorPowers(double power){
         frm.setPower(power);
         flm.setPower(power);
         blm.setPower(power);
         brm.setPower(power);
     }
-
-    public void setLinearSlidePower(double power){
-        linear_slide.setPower(power);
-    }
-
-    public void setArmPower(double power){
-        arm.setPower(power);
-    }
-
-
     /**
      *
      * @param power1 Front Right
@@ -98,35 +88,17 @@ public class Hardware {
         blm.setPower(power3);
         brm.setPower(power4);
     }
-
     public void setMotorTicks(int ticks){
         frm.setTargetPosition(ticks);
         flm.setTargetPosition(ticks);
         blm.setTargetPosition(ticks);
         brm.setTargetPosition(ticks);
     }
-
-    public void setLinearSlideTicks(int ticks){
-        linear_slide.setTargetPosition(ticks);
-    }
-
-    public void setArmTicks(int ticks){
-        arm.setTargetPosition(ticks);
-    }
-
     public void setDriveMode(DcMotor.RunMode mode){
         frm.setMode(mode);
         flm.setMode(mode);
         blm.setMode(mode);
         brm.setMode(mode);
-    }
-
-    public void setLinearSlideMode(DcMotor.RunMode mode){
-        linear_slide.setMode(mode);
-    }
-
-    public void setArmMode(DcMotor.RunMode mode){
-        arm.setMode(mode);
     }
 
     public boolean getTolerance(double val1, double val2, double tolerance){
