@@ -148,7 +148,7 @@ public class customMecanum extends OpMode {
             power2 = v2 - rotation;
             power3 = v2 + rotation;
             power4 = v1 + rotation;
-
+//
         }
         r.flm.setPower(power3 * deflator);
         r.frm.setPower(power4 * deflator);
